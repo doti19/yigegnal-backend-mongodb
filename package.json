@@ -1,0 +1,27 @@
+{
+  "name": "yigegnal-backend-mongodb",
+  "version": "1.0.0",
+  "description": "a node.js Express+MongoDb backend for the yigegnal platform",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doti19/yigegnal-backend-mongodb.git"
+  },
+  "author": "Saminas Hagos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/doti19/yigegnal-backend-mongodb/issues"
+  },
+  "homepage": "https://github.com/doti19/yigegnal-backend-mongodb#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-session": "^2.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.1",
+    "mongoose": "^7.4.5"
+  }
+}
