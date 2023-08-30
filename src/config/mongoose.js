@@ -30,6 +30,6 @@ exports.connect = () => {
     .connect(mongo.uri, {
       
     })
-    .then(() => console.log("mongoDB connected ..."));
+    .then(() => logger.info('mongoDB connected Successfully...'));
   return mongoose.connection;
 };

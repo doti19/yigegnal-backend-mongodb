@@ -33,7 +33,7 @@ const loginUserWithEmailAndPassword = async (email, password) => {
       if(!user.isEmailVerified){
         
         err.message = 'Please verify your email address first.';
-        throw new APIError(err);
+        throw new ApiError(err);
       }else{
         
         return  user;
@@ -55,7 +55,6 @@ const loginUserWithEmailAndPassword = async (email, password) => {
  */
 const logout = async (refreshToken) => {
   const refreshTokenDoc = await Token.findOne({ token: refreshToken, type: tokenTypes.REFRESH, blacklisted: false });
- console.log('heyo mr guy');
   if (!refreshTokenDoc) {
     throw new ApiError({status: httpStatus.NOT_FOUND, message:'Token Not found'});
   }

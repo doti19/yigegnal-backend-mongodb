@@ -9,7 +9,7 @@ const {password, objectId} = require('./custom.validation');
       email: Joi.string().email().required(),
       password: Joi.string().required().custom(password),
       name: Joi.string().max(128),
-      role: Joi.array().items(Joi.string().valid("admin", "user"))
+      role: Joi.string().valid("admin", "user")
 
     }),
   };

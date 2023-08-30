@@ -26,7 +26,9 @@ const createUser = async (userBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryUsers = async (filter, options) => {
-  const users = await User.paginate(filter, options);
+  // console.log('yo '+ {...filter} +  ' '+ {...options});
+  const users = await User.paginateIt(filter, options);
+
   return users;
 };
 
@@ -79,9 +81,21 @@ const deleteUserById = async (userId) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  await user.remove();
+  await user.deleteOne();
   return user;
 };
+
+const search = async(keyword)=>{
+const result = User.find(
+  {
+    "$or":[
+      {email: {$regex: keyword}},
+    ]
+  }
+);
+  return result;
+}
+
 
 module.exports = {
   createUser,
@@ -90,4 +104,5 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  search,
 };

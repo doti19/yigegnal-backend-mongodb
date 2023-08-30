@@ -18,6 +18,10 @@ router
   .patch(auth('manageUsers'), validator.params(userValidation.updateUser.params), validator.body(userValidation.updateUser.body), userController.updateUser)
   .delete(auth('manageUsers'), validator.params(userValidation.deleteUser.params), userController.deleteUser);
 
+router
+  .route('/search/:keyword')
+  .get(auth(), userController.search);
+
 module.exports = router;
 
 

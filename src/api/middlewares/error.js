@@ -26,7 +26,7 @@ const handler = (err, req, res, next) => {
 if(env === 'development'){
   logger.error(err);
 }
-  res.status(err.status).json(err);
+  res.status(err.status);
   res.json(response);
 };
 exports.handler = handler;

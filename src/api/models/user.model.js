@@ -129,7 +129,7 @@ userSchema.method({
  * Statics
  */
 userSchema.statics = {
-
+ paginateIt,
   /**
   * Check if email is taken
   * @param {string} email - The user's email

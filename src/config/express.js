@@ -15,6 +15,7 @@ const { logs, jwt, env } = require('./config');
 const strategies = require('./passport');
 const error = require('../api/middlewares/error');
 const {authLimiter} = require('../api/middlewares/rateLimiter');
+const mongoose = require("mongoose");
 
 /**
 * Express instance

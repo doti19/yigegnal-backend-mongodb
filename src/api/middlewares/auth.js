@@ -4,7 +4,6 @@ const  ApiError = require('../errors/api-error');
 const { roleRights } = require('../../config/roles');
 
 const verifyCallback = (req, resolve, reject, requiredRights) => async (err, user, info) => {
-  console.log(`saminas ${info}`);
   const error = err||info;
   if(error){
     return reject(new ApiError({status: UNAUTHORIZED, message: 'session expired, please login again'}))
