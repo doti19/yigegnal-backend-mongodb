@@ -1,25 +1,32 @@
 const httpStatus = require('http-status');
+const mongoose = require('mongoose');
 const expressValidation = require('express-validation');
 const APIError = require('../errors/api-error');
-const { env } = require('../../config/vars');
+const { env } = require('../../config/config');
+const logger = require('../../config/logger');
 
 /**
  * Error handler. Send stacktrace only during development
  * @public
  */
 const handler = (err, req, res, next) => {
+  // console.log('llllll');
   const response = {
     code: err.status,
     message: err.message || httpStatus[err.status],
+    
     errors: err.errors,
     stack: err.stack,
   };
 
-  if (env !== 'development') {
+  if (env !== 'development' && !err.isOperational) {
     delete response.stack;
+    delete response.message;
   }
-
-  res.status(err.status);
+if(env === 'development'){
+  logger.error(err);
+}
+  res.status(err.status).json(err);
   res.json(response);
 };
 exports.handler = handler;
@@ -39,12 +46,15 @@ exports.converter = (err, req, res, next) => {
       stack: err.stack,
     });
   } else if (!(err instanceof APIError)) {
+    const statusCode  = err.statusCode || err instanceof mongoose.Error ? httpStatus.BAD_REQUEST : httpStatus.INTERNAL_SERVER_ERROR;
+    const message = err.message || httpStatus[statusCode];
     convertedError = new APIError({
-      message: err.message,
-      status: err.status,
+      message: message,
+      status: statusCode,
+      isPublic: true,
       stack: err.stack,
     });
-  }
+  } 
 
   return handler(convertedError, req, res);
 };

@@ -57,6 +57,9 @@
     "eslint-plugin-import": "^2.28.1",
     "express": "^4.18.2",
     "express-joi-validation": "^5.0.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^6.9.0",
+    "express-session": "^1.17.3",
     "express-validation": "^4.1.0",
     "helmet": "^7.0.0",
     "http-status": "^1.6.2",
@@ -77,12 +80,15 @@
     "passport": "^0.6.0",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^4.0.1",
+    "pick": "^0.0.1",
     "pm2": "^5.3.0",
     "pug": "^3.0.2",
     "sinon": "^15.2.0",
     "sinon-chai": "^3.7.0",
     "supertest": "^6.3.3",
     "uuid": "^9.0.0",
-    "winston": "^3.10.0"
+    "validator": "^13.11.0",
+    "winston": "^3.10.0",
+    "xss-clean": "^0.1.4"
   }
 }

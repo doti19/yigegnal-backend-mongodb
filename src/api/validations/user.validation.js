@@ -1,56 +1,84 @@
 const Joi = require('joi');
-const User = require('../models/user.model');
+const {password, objectId} = require('./custom.validation');
 
-module.exports = {
 
-  // GET /v1/users
-  listUsers: {
-    query: Joi.object({
-      page: Joi.number().min(1),
-      perPage: Joi.number().min(1).max(100),
-      name: Joi.string(),
-      email: Joi.string(),
-      role: Joi.array().items(Joi.string().valid("admin", "user"))
-      // role:  Joi.string().valid(User.roles).required(),
-    }),
-  },
 
   // POST /v1/users
-  createUser: {
+  const createUser= {
     body: Joi.object({
       email: Joi.string().email().required(),
-      password: Joi.string().min(6).max(128).required(),
+      password: Joi.string().required().custom(password),
       name: Joi.string().max(128),
       role: Joi.array().items(Joi.string().valid("admin", "user"))
 
     }),
-  },
+  };
+  // GET /v1/users
+  const getUsers= {
+    query: Joi.object({
+      name: Joi.string(),
+      role: Joi.string(),
+      sortBy: Joi.string(),
+      limit: Joi.number().integer(),
+      page: Joi.number().integer(),
+      // perPage: Joi.number().integer().min(1).max(100),
+      // email: Joi.string(),
+      // role: Joi.array().items(Joi.string().valid("admin", "user"))
+      // role:  Joi.string().valid(User.roles).required(),
+    }),
+    // body: Joi.object({
+    //   userId: Joi.string().required()
+    // })
+  };
+
+ // GET /v1/users/:userId
+ const  getUser = {
+    params: Joi.object({
+      userId: Joi.string().custom(objectId),
+    }),
+  };
+
+  
 
   // PUT /v1/users/:userId
-  replaceUser: {
-    body: Joi.object({
-      email: Joi.string().email().required(),
-      password: Joi.string().min(6).max(128).required(),
-      name: Joi.string().max(128),
-      role: Joi.array().items(Joi.string().valid("admin", "user"))
+  // replaceUser: {
+  //   body: Joi.object({
+  //     email: Joi.string().email().required(),
+  //     password: Joi.string().custom(password).required(),
+  //     name: Joi.string().max(128),
+  //     role: Joi.array().items(Joi.string().valid("admin", "user"))
 
-    }),
-    params: Joi.object({
-      userId: Joi.string().regex(/^[a-fA-F0-9]{24}$/).required(),
-    }),
-  },
+  //   }),
+  //   params: Joi.object({
+  //     userId: Joi.string().custom(objectId).required(),
+  //   }),
+  // },
 
   // PATCH /v1/users/:userId
-  updateUser: {
+ const  updateUser= {
+    params: Joi.object({
+      userId: Joi.string().custom(objectId).required(),
+    }),
     body: Joi.object({
       email: Joi.string().email(),
-      password: Joi.string().min(6).max(128),
+      password: Joi.string().custom(password),
       name: Joi.string().max(128),
-      role: Joi.array().items(Joi.string().valid("admin", "user"))
+      // role: Joi.array().items(Joi.string().valid("admin", "user"))
 
+    }).min(1),
+  };
+
+  // DELETE /v1/users/:userId
+  const deleteUser = {
+    params: Joi.object().keys({
+      userId: Joi.string().custom(objectId),
     }),
-    params: Joi.object({
-      userId: Joi.string().regex(/^[a-fA-F0-9]{24}$/).required(),
-    }),
-  },
+  };
+
+module.exports = {
+  createUser,
+  getUsers,
+  getUser,
+  updateUser,
+  deleteUser,
 };

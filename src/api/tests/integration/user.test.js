@@ -542,7 +542,7 @@ describe('Users API', async () => {
         .expect(httpStatus.UNAUTHORIZED)
         .then((res) => {
           expect(res.body.code).to.be.equal(httpStatus.UNAUTHORIZED);
-          expect(res.body.message).to.be.equal('jwt expired');
+          expect(res.body.message).to.be.equal('jwt e1xpired');
           expect(res.body).to.not.have.a.property('stack');
         });
     });

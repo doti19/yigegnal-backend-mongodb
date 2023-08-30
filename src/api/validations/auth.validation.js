@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { password } = require('./custom.validation');
 
 module.exports = {
   // POST /v1/auth/register
@@ -7,9 +8,7 @@ module.exports = {
         .email()
         .required(),
       password: Joi.string()
-        .required()
-        .min(6)
-        .max(128),
+        .required().custom(password),
         role: Joi.string().required(),
     }),
   
@@ -22,9 +21,17 @@ module.exports = {
         .required(),
       password: Joi.string()
         .required()
-        .max(128),
+        ,
     }),
   },
+
+  // GET /v1/auth/logout
+  logout: {
+    body: Joi.object({
+      refreshToken: Joi.string().required(),
+    })
+  },
+
 
   // POST /v1/auth/facebook
   // POST /v1/auth/google
@@ -34,18 +41,18 @@ module.exports = {
     }),
   },
 
-  // POST /v1/auth/refresh
-  refresh: {
+  // POST /v1/auth/refresh-tokens
+  refreshTokens: {
     body: Joi.object({
-      email: Joi.string()
-        .email()
-        .required(),
+      // email: Joi.string()
+      //   .email()
+      //   .required(),
       refreshToken: Joi.string().required(),
     }),
   },
 
-  // POST /v1/auth/refresh
-  sendPasswordReset: {
+  // POST /v1/auth/forgot-password
+  forgotPassword: {
     body: Joi.object({
       email: Joi.string()
         .email()
@@ -53,17 +60,40 @@ module.exports = {
     }),
   },
 
-  // POST /v1/auth/password-reset
-  passwordReset: {
+  // POST /v1/auth/reset-password
+  resetPassword: {
     body: Joi.object({
-      email: Joi.string()
-        .email()
-        .required(),
-      password: Joi.string()
-        .required()
-        .min(6)
-        .max(128),
+      password: Joi.string().required().custom(password),
+    }),
+    query: Joi.object({
+      // email: Joi.string()
+      //   .email()
+      //   .required(),
+      // password: Joi.string()
+      //   .required()
+      //   .min(6)
+      //   .max(128),
       resetToken: Joi.string().required(),
     }),
   },
+
+  
+
+  // POST /v1/auth/send-verification-email
+  // sendVerificationEmail: {
+  //   body: Joi.object({
+  //     email: Joi.string()
+  //       .email(),
+  //       // .required(),
+  //   }),
+  // },
+
+  // POST /v1/auth/verify-email
+   verifyEmail: {
+    query: Joi.object({
+      token: Joi.string().required(),
+    }),
+  },
 };
+
+

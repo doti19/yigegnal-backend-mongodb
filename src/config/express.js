@@ -1,4 +1,5 @@
 const express = require('express');
+// const morgan = require('./morgan');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const compress = require('compression');
@@ -6,10 +7,14 @@ const methodOverride = require('method-override');
 const cors = require('cors');
 const helmet = require('helmet');
 const passport = require('passport');
+const expressSession = require('express-session');
+// const xss = require('xss-clean');
+const mongoSanitize = require('express-mongo-sanitize');
 const routes = require('../api/routes/v1');
-const { logs } = require('./vars');
+const { logs, jwt, env } = require('./config');
 const strategies = require('./passport');
 const error = require('../api/middlewares/error');
+const {authLimiter} = require('../api/middlewares/rateLimiter');
 
 /**
 * Express instance
@@ -20,11 +25,20 @@ const app = express();
 // request logging. dev: console | production: file
 app.use(morgan(logs));
 
+// if (env !== 'test') {
+//     app.use(morgan.successHandler);
+//     app.use(morgan.errorHandler);
+//   }
+
 // parse requests of content-type - application/json
 app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({extended: true}));
+
+// // sanitize request data
+// app.use(xss());
+// app.use(mongoSanitize());
 
 // gzip compression
 app.use(compress());
@@ -40,10 +54,23 @@ app.use(helmet());
 app.use(cors());
 
 // enable authentication
+app.use(expressSession({ 
+    secret: jwt.jwtSecret,
+    resave: true,
+    saveUninitialized: true
+  }));
 app.use(passport.initialize());
-passport.use('jwt', strategies.jwt);
+// app.use(passport.session());
+passport.use('jwt', strategies.jwtStrategy);
 passport.use('facebook', strategies.facebook);
 passport.use('google', strategies.google);
+
+// limit repeated failed requests to auth endpoints
+// if (config.env === 'production') {
+//     app.use('/v1/auth', authLimiter);
+//   }
+  
+
 
 // mount api v1 routes
 app.use('/v1', routes);
