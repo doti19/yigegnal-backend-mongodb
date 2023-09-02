@@ -92,7 +92,7 @@ const result = User.find(
       {email: {$regex: keyword}},
     ]
   }
-);
+) ;
   return result;
 }
 

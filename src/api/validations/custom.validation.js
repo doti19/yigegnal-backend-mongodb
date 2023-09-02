@@ -14,9 +14,28 @@ const objectId = (value, helpers) => {
     // }
     return value;
   };
+const {Catagory} = require("../models");
   
+  const catagory =  async(value, helpers)=>{
+    const data =  await Catagory.isCatagoryFound(value);
+    
+    // if(data.every(el => el.name==value)){
+    //   return value;
+    // }
+    
+    if(data) return value;
+    // Catagory.findOne({name: value}).then((el)=> {return value;});
+    console.log('it didnt return');
+
+return helpers.message('invalid catagory name yo');
+   
+    
+
+  }
+
   module.exports = {
     objectId,
     password,
+    catagory,
   };
   

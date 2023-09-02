@@ -1,16 +1,66 @@
 //make bluebird default Promise
-Promise = require('bluebird'); // eslint-disable-line no-global-assign
-const {port, env } = require('./config/config');
-const logger = require('./config/logger');
-const app = require('./config/express');
-const mongoose = require('./config/mongoose');
-
+Promise = require("bluebird"); // eslint-disable-line no-global-assign
+const { port, env } = require("./config/config");
+const logger = require("./config/logger");
+const app = require("./config/express");
+const mongoose = require("./config/mongoose");
+const {Catagory} = require("./api/models");
 //open mongoose connection
 mongoose.connect();
 
+const catagories = [
+  {
+    name: "Ids",
+  },
+  {
+    name: "License",
+  },
+  {
+    name: "Property Dead",
+  },
+  {
+    name: "Libre",
+  },
+  {
+    name: "Receipts",
+  },
+  {
+    name: "Electronic Gadget",
+  },
+  {
+    name: "Passport",
+  },
+  {
+    name: "Bank Book",
+  },
+  {
+    name: "Photo",
+  },
+];
+async function mySeeder() {
+    const data = await Catagory.find();
+    if (data.length !== 0) {
+        // Data exists, no need to seed.
+        return;
+    }
+    
+    catagories.forEach((catagory)=>{
+        Catagory.create(catagory).then((createdCatagory)=>{
+           
+        }).catch((err)=>{
+            logger.error('error while creating catagory:' + err);
+        })
+    })
+    logger.info('catagories have been registered for the first time...');
 
+    // some other seed logic
+    // ...
+
+    
+}
+mySeeder();
 //listen to requests
-app.listen(port, ()=> logger.info(`server started on port ${port} (${env})`));
+app.listen(port, () => logger.info(`server started on port ${port} (${env})`));
 
 // const express = require("express");
 // const cors = require("cors");
@@ -26,13 +76,11 @@ app.listen(port, ()=> logger.info(`server started on port ${port} (${env})`));
 
 // app.use(cors(corsOptions));
 
-
-
 // app.use(
 //     cookieSession({
 //         name: "mehari-session",
 //         keys: ["MEHARI_SECRET"], //should use as secret environment variable
-//         httpOnly: true      
+//         httpOnly: true
 //     })
 // );
 
@@ -88,9 +136,9 @@ app.listen(port, ()=> logger.info(`server started on port ${port} (${env})`));
 //             console.log("added 'admin' to roles collection");
 //         });
 //     }
-    
+
 //   }).catch(err=> console.log('hellow'));
-   
+
 //    Role.estimatedDocumentCount((err, count)=>{
 //         if(!err && count == 0){
 //             new Role({
@@ -129,7 +177,7 @@ app.listen(port, ()=> logger.info(`server started on port ${port} (${env})`));
 //     });
 // });
 
-// routes 
+// routes
 // require('./app/routes/auth.routes')(app);
 // require('./app/routes/user.routes')(app);
 
@@ -138,5 +186,3 @@ app.listen(port, ()=> logger.info(`server started on port ${port} (${env})`));
 // app.listen(PORT, ()=>{
 //     console.log(`Server is running on port ${PORT}`);
 // });
-
-

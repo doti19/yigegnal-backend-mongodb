@@ -73,6 +73,7 @@
     "moment-timezone": "^0.5.43",
     "mongoose": "^7.4.5",
     "morgan": "^1.10.0",
+    "nanoid": "^4.0.2",
     "nodemailer": "^6.9.4",
     "nodemon": "^3.0.1",
     "nyc": "^15.1.0",
