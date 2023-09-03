@@ -10,13 +10,13 @@ const auth = require('../../middlewares/auth');
 
 const router = express.Router();
 
-router.post('/register',  authController.register);
+router.post('/register', auth.auth(), authController.register);
 router.post('/login', validator.body(authValidation.login.body), authController.login);
 router.post('/logout', validator.body(authValidation.logout.body), authController.logout);
 router.post('/refresh-tokens', validator.body(authValidation.refreshTokens.body), authController.refreshTokens);
 router.post('/forgot-password', validator.body(authValidation.forgotPassword.body), authController.forgotPassword);
 router.post('/reset-password', validator.query(authValidation.resetPassword.query), validator.body(authValidation.resetPassword.body), authController.resetPassword);
-router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
+router.post('/send-verification-email', auth.auth(), authController.sendVerificationEmail);
 // router.post('/verify-email', validator.query(authValidation.verifyEmail.query), authController.verifyEmail);
 
 module.exports = router;

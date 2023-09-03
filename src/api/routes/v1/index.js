@@ -1,7 +1,8 @@
 const express = require('express');
 const userRoutes = require('./user.route');
 const authRoutes = require('./auth.route');
-const itemRoutes = require('./item.route');
+const foundItemRoutes = require('./foundItem.route');
+const inquiryRoutes = require('./inquiry.route');
 
 const router = express.Router();
 
@@ -16,7 +17,8 @@ router.get('/status', (req, res) => res.send('OK'));
 router.use('/docs', express.static('docs'));
 
 router.use('/users', userRoutes);
-router.use('/items', itemRoutes);
+router.use('/founded-item', foundItemRoutes);
+router.use('/inquiry', inquiryRoutes);
 router.use('/auth', authRoutes);
 
 module.exports = router;

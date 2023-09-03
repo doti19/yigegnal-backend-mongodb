@@ -70,7 +70,7 @@ const {password, objectId} = require('./custom.validation');
 
   // DELETE /v1/users/:userId
   const deleteUser = {
-    params: Joi.object().keys({
+    params: Joi.object({
       userId: Joi.string().custom(objectId),
     }),
   };

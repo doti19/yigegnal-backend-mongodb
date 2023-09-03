@@ -9,18 +9,18 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(auth('manageUsers'), validator.body(userValidation.createUser.body), userController.createUser)
-  .get(auth('getUsers'), validator.query(userValidation.getUsers.query), userController.getUsers);
+  .post(auth.auth(), validator.body(userValidation.createUser.body), userController.createUser)
+  .get(auth.auth(), validator.query(userValidation.getUsers.query), userController.getUsers);
 
 router
   .route('/:userId')
-  .get(auth('getUsers'), validator.params(userValidation.getUser.params), userController.getUser)
-  .patch(auth('manageUsers'), validator.params(userValidation.updateUser.params), validator.body(userValidation.updateUser.body), userController.updateUser)
-  .delete(auth('manageUsers'), validator.params(userValidation.deleteUser.params), userController.deleteUser);
+  .get(auth.auth(), validator.params(userValidation.getUser.params), userController.getUser)
+  .patch(auth.auth(), validator.params(userValidation.updateUser.params), validator.body(userValidation.updateUser.body), userController.updateUser)
+  .delete(auth.auth(), validator.params(userValidation.deleteUser.params), userController.deleteUser);
 
 router
   .route('/search/:keyword')
-  .get(auth(), userController.search);
+  .get(auth.auth(), userController.search);
 
 module.exports = router;
 

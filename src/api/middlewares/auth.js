@@ -5,9 +5,13 @@ const { roleRights } = require('../../config/roles');
 
 const verifyCallback = (req, resolve, reject, requiredRights) => async (err, user, info) => {
   const error = err||info;
-  if(error){
-    return reject(new ApiError({status: UNAUTHORIZED, message: 'session expired, please login again'}))
+  if(err){
+    return reject(new ApiError({status: UNAUTHORIZED, message: 'session expired, please login again '}))
   }
+else if(info){
+  return reject(new ApiError({status: UNAUTHORIZED, message: 'You need to login to perform this operation'}))
+ 
+}
   if (!user) {
     return reject(new ApiError({status: UNAUTHORIZED, message:'Please register first'}));
   }
@@ -23,7 +27,6 @@ const verifyCallback = (req, resolve, reject, requiredRights) => async (err, use
 
   resolve();
 };
-
 const auth = (...requiredRights) => async (req, res, next) => {
   
   return new Promise((resolve, reject) => {
@@ -32,4 +35,19 @@ const auth = (...requiredRights) => async (req, res, next) => {
     .then(() => next())
     .catch((err) => next(err));
 };
-module.exports = auth;
+
+const restrictTo = (...roles) => 
+  (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new ApiError({status: FORBIDDEN,message:"you don`t have permission to perform this action"})
+      );
+    }
+    next();
+  
+};
+module.exports = {
+  auth,
+  restrictTo,
+}
+// module.exports = auth;
