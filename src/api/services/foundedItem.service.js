@@ -18,6 +18,12 @@ const getFoundedItems = async(filter, options)=>{
   return foundedItems;
 }
 
+const getPendingItems = async(filter, options)=>{
+  const foundedItems = await FoundedItem.paginateIt(filter, options);
+
+  return foundedItems;
+}
+
 const getFoundedItemById = async(foundedItemId)=>{
   const foundedItem = await FoundedItem.findById(foundedItemId);
   return foundedItem;
@@ -72,5 +78,6 @@ const updateFoundedItemStatus = async(foundedItemId, updateBody) =>{
     getFoundedItemById,
     updateFoundedItemById,
     deleteFoundedItemById,
-    updateFoundedItemStatus
+    updateFoundedItemStatus,
+    getPendingItems,
     }

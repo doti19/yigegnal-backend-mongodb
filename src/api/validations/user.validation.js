@@ -9,7 +9,7 @@ const {password, objectId} = require('./custom.validation');
       email: Joi.string().email().required(),
       password: Joi.string().required().custom(password),
       name: Joi.string().max(128),
-      role: Joi.string().valid("admin", "user")
+      role: Joi.string().valid("super_admin", "admin","db_analysist", "delivery").required()
 
     }),
   };
@@ -21,6 +21,7 @@ const {password, objectId} = require('./custom.validation');
       sortBy: Joi.string(),
       limit: Joi.number().integer(),
       page: Joi.number().integer(),
+      isEmailVerified: Joi.string(),
       // perPage: Joi.number().integer().min(1).max(100),
       // email: Joi.string(),
       // role: Joi.array().items(Joi.string().valid("admin", "user"))

@@ -68,12 +68,14 @@ const InquirySchema = new mongoose.Schema({
     registeredBy: {
         type: String,
         required: true,
-    }, 
+    },
+    momentDate: String,
+    momentDateOnly: String, 
     
 },
-{ timestamps: true }
+{ timestamps: {createdAt: true, updatedAt: true} , toJson: { virtuals: true }, toObj: { virtuals: true }}
 );
-
+InquirySchema.set('timestamps', true);
 InquirySchema.plugin(toJSON);
 InquirySchema.plugin(paginate);
 

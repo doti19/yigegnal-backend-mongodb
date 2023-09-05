@@ -16,6 +16,8 @@ router
     .patch(validator.params(foundedItemValidation.updateFoundedItem.params),validator.body(foundedItemValidation.updateFoundedItem.body),foundedItemController.updateFoundedItem)
     .delete(validator.params(foundedItemValidation.deleteFoundedItem.params),foundedItemController.deleteFoundedItem);
 
+   
+
 router.patch('/status/:foundedItemId', validator.params(foundedItemValidation.updateFoundedItemStatus.params),validator.body(foundedItemValidation.updateFoundedItemStatus.body), foundedItemController.updateStatus);
 
 

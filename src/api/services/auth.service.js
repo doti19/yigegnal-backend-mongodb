@@ -30,15 +30,15 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   }
   else {
     if (await user.isPasswordMatch(password)) {
-      if(!user.isEmailVerified){
+      // if(!user.isEmailVerified){
         
-        err.message = 'Please verify your email address first.';
-        throw new ApiError(err);
-      }else{
+      //   err.message = 'Please verify your email address first.';
+      //   throw new ApiError(err);
+      // }else{
         
         return  user;
         
-      }
+      // }
     }
     err.message = 'Incorrect email or password';
   

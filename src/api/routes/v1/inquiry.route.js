@@ -10,7 +10,7 @@ const router = express.Router();
 
 router
     .route('/')
-    .get( auth.auth(), auth.restrictTo('admin'),validator.query(inquiryValidation.getInquiries.query),inquiryController.getInquiries)
+    .get( auth.auth(),validator.query(inquiryValidation.getInquiries.query),inquiryController.getInquiries)
     .post(validator.body(inquiryValidation.createInquiry.body), inquiryController.createInquiry);
 
 router

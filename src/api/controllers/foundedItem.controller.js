@@ -11,7 +11,7 @@ const createFoundedItem = catchAsync(async (req, res) => {
   });
 
   const getFoundedItems = catchAsync(async(req, res)=>{
-    const filter = pick(req.query, ['foundedDate', 'role']);
+    const filter = pick(req.query, ['status', 'role']);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const result = await foundedItemService.getFoundedItems(filter, options);
     res.send(result);
@@ -38,7 +38,15 @@ const deleteFoundedItem = catchAsync(async(req, res)=>{
 const updateStatus = catchAsync(async(req, res)=>{
     const foundedItem = await foundedItemService.updateFoundedItemStatus(req.params.foundedItemId, req.body);
     res.send(foundedItem)
-})
+});
+
+  const getPendingItems = catchAsync(async(req, res)=>{
+    const filter = pick(req.query, ['foundedDate', 'role'], 'status=Pending');
+    const options = pick(req.query, ['sortBy', 'limit', 'page']);
+
+    const result = await foundedItemService.getPendingItems(filter, options);
+    res.send(result);
+});
 
 
 
@@ -48,7 +56,8 @@ const updateStatus = catchAsync(async(req, res)=>{
    getFoundedItem,
    updateFoundedItem,
    deleteFoundedItem,
-   updateStatus
+   updateStatus,
+   getPendingItems
 
 
   }
