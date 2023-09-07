@@ -23,6 +23,7 @@ const getInquiries = catchAsync(async(req, res)=>{
     // const filter = qs.parse(req.query);
     // console.log(filter);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
+    
     const result = await inquiryService.getInquiries(filter, options);
     res.send(result);
 });

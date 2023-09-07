@@ -14,6 +14,7 @@ const createInquiry = async (inquiryBody) => {
     };
   
 const getInquiries = async(filter, options)=>{
+  
   const inquiries = await Inquiry.paginateIt(filter, options);
 
   return inquiries;
@@ -33,7 +34,11 @@ const updateInquiryById= async(InquiryId, updateBody) =>{
   // if(inquiry.isFound || inquiry.status=="Found"){
   //   throw new ApiError(httpStatus., 'Inquiry not found');
   // }
-  Object.assign(inquiry, updateBody);
+  Object.assign(inquiry.item, updateBody.item);
+  Object.assign(inquiry.owner, updateBody.owner);
+  // Object.assign(inquiry, updateBody);
+  console.log('am here');
+  console.log(inquiry);
   await inquiry.save();
   return inquiry;
 

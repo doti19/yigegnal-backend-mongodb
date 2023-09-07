@@ -4,11 +4,16 @@ const {Catagory} = require('../models');
 const ApiError = require('../errors/api-error');
 
 
-const createFoundedItem = async (foundedItemBody) => {
+
+
+const createFoundedItem = async (foundedItemBody, user) => {
 // const catagories = await Catagory.find();
+
 const isIt = await Catagory.isCatagoryFound(foundedItemBody.item.catagory);
    if (!isIt) throw new ApiError({status: httpStatus.BAD_REQUEST, message:'invalid catagory name '});
-  return await FoundedItem.create(foundedItemBody);
+  foundedItemBody.registeredBy = user.id;
+  hello =  await FoundedItem.create(foundedItemBody);
+  return hello;
 };
 
 

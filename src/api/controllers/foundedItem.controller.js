@@ -3,10 +3,11 @@ const pick = require('../utils/pick');
 const ApiError = require('../errors/api-error');
 const catchAsync = require('../utils/catchAsync');
 const { foundedItemService } = require('../services');
-
+const logger = require("../../config/logger");
 const createFoundedItem = catchAsync(async (req, res) => {
- 
-    const foundedItem = await foundedItemService.createFoundedItem(req.body);
+  logger.info('yo am here...');
+  
+    const foundedItem = await foundedItemService.createFoundedItem(req.body, req.user);
     res.status(httpStatus.CREATED).send(foundedItem);
   });
 

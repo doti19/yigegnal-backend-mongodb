@@ -2,13 +2,14 @@ const express = require('express');
 const validator = require('express-joi-validation').createValidator({});
 const foundedItemValidation =  require('../../validations/foundedItem.validation');
 const foundedItemController = require('../../controllers/foundedItem.controller');
+const auth = require('../../middlewares/auth');
 
 const router = express.Router();
 
 router
     .route('/')
     .get( validator.query(foundedItemValidation.getFoundedItems.query),foundedItemController.getFoundedItems)
-    .post(validator.body(foundedItemValidation.createFoundedItem.body), foundedItemController.createFoundedItem);
+    .post(auth.auth(),validator.body(foundedItemValidation.createFoundedItem.body), foundedItemController.createFoundedItem);
 
     router
     .route('/:foundedItemId')

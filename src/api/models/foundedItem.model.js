@@ -8,7 +8,7 @@ const FoundedItemSchema = new mongoose.Schema(
     hasOwner: {
       type: Boolean,
       required: true,
-      default: false,
+      // default: false,
     },
     owner: {
       firstName: {
@@ -84,19 +84,21 @@ const FoundedItemSchema = new mongoose.Schema(
       type: String,
       enum: ['Delivered', 'Not Delivered', 'Pending'],
       default: 'Pending',
-      required: true,
+      // required: true,
     },
     deliveredBy: {
       type: String,
-      required: function(){return this.status=='Delivered'}
+      // required: function(){return this.status=='Delivered'}
     },
     registeredBy: {
-      type: String,
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
       required: true,
+      
     },
     deliveryDate: {
       type: Date,
-      required: function(){return this.status=='Delivered'},
+      // required: function(){return this.status=='Delivered'},
       
     }
     

@@ -16,7 +16,7 @@ const createInquiry = {
             lostDate: Joi.date().required(),
             detail: Joi.string(),
           }),
-           status: Joi.string().required().valid("Delivered", "Pending", "Found").default("Pending"),
+           // status: Joi.string().required().valid("Delivered", "Pending", "Found").default("Pending"),
           //  isFound: Joi.boolean().required().default(false),
            foundedItemId: Joi.when("isFound", {
             is: true,

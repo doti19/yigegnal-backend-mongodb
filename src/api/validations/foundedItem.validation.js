@@ -37,7 +37,7 @@ const createFoundedItem = {
       then: Joi.string().required(),
       otherwise: Joi.valid(null),
     }),
-    registeredBy: Joi.string().required()
+   
   }),
 };
 

@@ -43,7 +43,8 @@ const paginate = (schema) => {
       newFilter=JSON.parse(newFilter);
       console.log('hello '+ newFilter);
       const countPromise = this.countDocuments(newFilter).exec();
-      let docsPromise = this.find(newFilter).sort(sort).skip(skip).limit(limit);
+      // let docsPromise = this.find(newFilter).sort(sort).skip(skip).limit(limit);
+      let docsPromise = this.find(newFilter);
   
       if (options.populate) {
         options.populate.split(',').forEach((populateOption) => {
