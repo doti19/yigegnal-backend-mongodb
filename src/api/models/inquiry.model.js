@@ -26,16 +26,16 @@ const InquirySchema = new mongoose.Schema({
     owner: {
       firstName: {
         type: String,
-        required: true,
+        required: function(){return (this.status == 'Found' || this.status=='Delivered' )},
       },
       lastName: {
         type: String,
-        required: true,
+        required: function(){return (this.status == 'Found' || this.status=='Delivered' )},
 
       },
       phoneNumber: {
         type: String,
-        required: true,
+        required: function(){return (this.status == 'Found' || this.status=='Delivered' )},
 
       },
       email: {
@@ -51,7 +51,7 @@ const InquirySchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['Delivered', 'Pending', 'Found'],
+        enum: ['Pending', 'Found'],
         required: true,
         default: 'Pending',
     },

@@ -5,7 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const { foundedItemService } = require('../services');
 const logger = require("../../config/logger");
 const createFoundedItem = catchAsync(async (req, res) => {
-  logger.info('yo am here...');
+ 
   
     const foundedItem = await foundedItemService.createFoundedItem(req.body, req.user);
     res.status(httpStatus.CREATED).send(foundedItem);
@@ -13,7 +13,7 @@ const createFoundedItem = catchAsync(async (req, res) => {
 
   const getFoundedItems = catchAsync(async(req, res)=>{
     const filter = pick(req.query, ['status', 'role']);
-    const options = pick(req.query, ['sortBy', 'limit', 'page']);
+    const options = pick(req.query, ['sortBy', 'limit', 'page', 'noLimit']);
     const result = await foundedItemService.getFoundedItems(filter, options);
     res.send(result);
 });
@@ -41,11 +41,11 @@ const updateStatus = catchAsync(async(req, res)=>{
     res.send(foundedItem)
 });
 
-  const getPendingItems = catchAsync(async(req, res)=>{
+  const getNotDeliveredFoundItems = catchAsync(async(req, res)=>{
     const filter = pick(req.query, ['foundedDate', 'role'], 'status=Pending');
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
 
-    const result = await foundedItemService.getPendingItems(filter, options);
+    const result = await foundedItemService.getNotDeliveredFoundItems(filter, options);
     res.send(result);
 });
 
@@ -58,7 +58,7 @@ const updateStatus = catchAsync(async(req, res)=>{
    updateFoundedItem,
    deleteFoundedItem,
    updateStatus,
-   getPendingItems
+   getNotDeliveredFoundItems
 
 
   }

@@ -6,7 +6,7 @@ const { inquiryService } = require('../services');
 const qs = require('qs');
 
 const createInquiry = catchAsync(async(req, res) => {
-    const inquiry = await inquiryService.createInquiry(req.body);
+    const inquiry = await inquiryService.createInquiry(req.body, req.user);
     res.status(httpStatus.CREATED).send(inquiry);
 });
 

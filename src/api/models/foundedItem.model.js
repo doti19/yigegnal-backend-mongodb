@@ -83,7 +83,7 @@ const FoundedItemSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ['Delivered', 'Not Delivered', 'Pending'],
-      default: 'Pending',
+      default: 'Not Delivered',
       // required: true,
     },
     deliveredBy: {
@@ -100,11 +100,16 @@ const FoundedItemSchema = new mongoose.Schema(
       type: Date,
       // required: function(){return this.status=='Delivered'},
       
-    }
-    
-    
+    },
+    inquiryId:{
+     type: mongoose.Schema.ObjectId,
+      ref: "Inquiry",
+      required: function(){ return this.status=='Pending'},
   },
-  { timestamps: true }
+   momentDate: String,
+    momentDateOnly: String, 
+},
+{ timestamps: {createdAt: true, updatedAt: true} , toJson: { virtuals: true }, toObj: { virtuals: true }}
 );
 // add plugin that converts mongoose to json
 FoundedItemSchema.plugin(toJSON);

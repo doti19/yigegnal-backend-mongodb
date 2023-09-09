@@ -18,13 +18,13 @@ const createInquiry = {
           }),
            // status: Joi.string().required().valid("Delivered", "Pending", "Found").default("Pending"),
           //  isFound: Joi.boolean().required().default(false),
-           foundedItemId: Joi.when("isFound", {
-            is: true,
-            then: Joi.string().custom(objectId),
-            otherwise: Joi.valid(null),
+           // foundedItemId: Joi.when("isFound", {
+           //  is: true,
+           //  then: Joi.string().custom(objectId),
+           //  otherwise: Joi.valid(null),
          
-           }),
-           registeredBy: Joi.string().required()
+           // }),
+           // registeredBy: Joi.string().required()
 
     })
 }
@@ -101,7 +101,7 @@ const updateInquiryStatus = {
     inquiryId: Joi.string().custom(objectId),
   }),
   body: Joi.object({
-    status: Joi.string().required().valid("Delivered", "Pending", "Found"),
+    status: Joi.string().required().valid("Pending", "Found"),
     
     foundedItemId: Joi.when("status", {
      is: Joi.string().valid("Found"),

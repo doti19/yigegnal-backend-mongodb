@@ -8,8 +8,8 @@ const ApiError = require('../errors/api-error');
  * @param {Object} inquiryBody
  * @returns {Promise<item>}
  */
-const createInquiry = async (inquiryBody) => {
-  
+const createInquiry = async (inquiryBody, user) => {
+  inquiryBody.registeredBy = user.id;
       return await Inquiry.create(inquiryBody);
     };
   
@@ -58,16 +58,21 @@ const updateInquiryStatus = async(inquiryId, updateBody) =>{
   if(!inquiry){
     throw new ApiError(httpStatus.NOT_FOUND, 'Inquiry not found');
   }
-  if(inquiry.status=='Delivered' || inquiry.status == updateBody.status){
+  if( inquiry.status == updateBody.status){
     throw new ApiError({status: httpStatus.BAD_REQUEST, message:'Nothing to Edit here'});
   }
-  if(updateBody.status=='Found' && inquiry.status != "Delivered"){
+  if(updateBody.status=='Found' && inquiry.status != "Found"){
     inquiry.status = 'Found';
     inquiry.isFound= true;
     inquiry.foundedItemId = updateBody.foundedItemId;
-  } else{
-    inquiry.status = updateBody.status;
+  } else if(updateBody.status=='Pending' && inquiry.status !='Pending'){
+    if(inquiry.isFound == true){
+    inquiry.foundedItemId = undefined;
+      inquiry.isFound = false;
+    }
+    inquiry.status = 'Pending';
   }
+  // console.log(inquiry.foundedItemId);
   await inquiry.save();
   return inquiry;
 }

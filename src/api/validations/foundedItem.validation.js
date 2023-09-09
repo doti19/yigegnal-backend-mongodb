@@ -29,14 +29,15 @@ const createFoundedItem = {
     }),
     foundedPlace: Joi.string().required(),
     foundedDate: Joi.date().required(),
-    status: Joi.string()
-      .valid("Delivered", "Not Delivered", "Pending")
-      .default("Pending"),
-    deliveredBy: Joi.when("status", {
-      is: Joi.string().valid("Delivered"),
-      then: Joi.string().required(),
-      otherwise: Joi.valid(null),
-    }),
+    // status: Joi.string()
+    //   .valid("Delivered", "Not Delivered", "Pending")
+    //   .default("Not Delivered"),
+    // deliveredBy: Joi.when("status", {
+    //   is: Joi.string().valid("Delivered"),
+    //   then: Joi.string().required(),
+    //   otherwise: Joi.valid(null),
+    // }),
+    //TODO should i add inquiry id if it is pending
    
   }),
 };
@@ -116,6 +117,12 @@ const updateFoundedItemStatus = {
      then: Joi.string(),
      otherwise: Joi.valid(null),
     }),
+
+    inquiryId: Joi.when("status",{
+      is: Joi.string().valid('Pending'),
+      then: Joi.string().custom(objectId),
+      otherwise: Joi.valid(null)
+    })
 
   })
 }

@@ -10,7 +10,7 @@ router
     .route('/')
     .get( validator.query(foundedItemValidation.getFoundedItems.query),foundedItemController.getFoundedItems)
     .post(auth.auth(),validator.body(foundedItemValidation.createFoundedItem.body), foundedItemController.createFoundedItem);
-
+router.get('/not-delivered', foundedItemController.getNotDeliveredFoundItems) ;
     router
     .route('/:foundedItemId')
     .get(validator.params(foundedItemValidation.getFoundedItem.params), foundedItemController.getFoundedItem)
@@ -18,6 +18,7 @@ router
     .delete(validator.params(foundedItemValidation.deleteFoundedItem.params),foundedItemController.deleteFoundedItem);
 
    
+  
 
 router.patch('/status/:foundedItemId', validator.params(foundedItemValidation.updateFoundedItemStatus.params),validator.body(foundedItemValidation.updateFoundedItemStatus.body), foundedItemController.updateStatus);
 

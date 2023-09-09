@@ -11,7 +11,7 @@ const router = express.Router();
 router
     .route('/')
     .get( auth.auth(),validator.query(inquiryValidation.getInquiries.query),inquiryController.getInquiries)
-    .post(validator.body(inquiryValidation.createInquiry.body), inquiryController.createInquiry);
+    .post(auth.auth(),validator.body(inquiryValidation.createInquiry.body), inquiryController.createInquiry);
 
 router
     .route('/:inquiryId')
