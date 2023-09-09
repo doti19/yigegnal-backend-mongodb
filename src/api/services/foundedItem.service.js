@@ -73,7 +73,7 @@ const updateFoundedItemStatus = async(foundedItemId, updateBody) =>{
   }
   console.log('original');
   console.log(foundedItem);
-  if(foundedItem.status=='Delivered' || foundedItem.status == updateBody.status){
+  if(foundedItem.status == updateBody.status){
     throw new ApiError({status: httpStatus.BAD_REQUEST, message:'Nothing to Edit here'});
   }
   if(updateBody.status=='Delivered' && foundedItem.status != "Delivered"){
@@ -88,7 +88,9 @@ const updateFoundedItemStatus = async(foundedItemId, updateBody) =>{
     }
 console.log('am heree');
     foundedItem.status = 'Pending';
-    foundedItem.inquiryId = updateBody.inquiryId;
+    foundedItem.hasInquiry = updateBody.hasInquiry;
+
+    foundedItem.inquiryId = updateBody.hasInquiry? updateBody.inquiryId: undefined;
     console.log(foundedItem);
 
   } else if(updateBody.status == 'Not Delivered' && foundedItem.status !='Not Delivered'){
@@ -97,6 +99,7 @@ console.log('am heree');
      foundedItem.deliveryDate= undefined;
     } else if(foundedItem.status=='Pending'){
        foundedItem.inquiryId =undefined;
+       foundedItem.hasInquiry = false;
     }
     foundedItem.status = 'Not Delivered';
     console.log('not delivered');

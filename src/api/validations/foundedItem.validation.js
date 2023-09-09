@@ -111,7 +111,12 @@ const updateFoundedItemStatus = {
   }),
   body: Joi.object({
     status: Joi.string().required().valid("Delivered", "Pending", "Not Delivered"),
-    
+    hasInquiry: Joi.when("status",{
+      is: Joi.string().valid('Pending'),
+      then:  Joi.boolean().required().default(false),
+      otherwise: Joi.valid(null)
+    }),
+   
     deliveredBy: Joi.when("status", {
      is: Joi.string().valid("Delivered"),
      then: Joi.string(),
@@ -120,7 +125,11 @@ const updateFoundedItemStatus = {
 
     inquiryId: Joi.when("status",{
       is: Joi.string().valid('Pending'),
-      then: Joi.string().custom(objectId),
+      then: Joi.when("hasInquiry",{
+        is: true,
+        then: Joi.string().custom(objectId),
+        otherwise: Joi.valid(null)
+      }),
       otherwise: Joi.valid(null)
     })
 

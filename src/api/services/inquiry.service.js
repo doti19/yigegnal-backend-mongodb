@@ -20,6 +20,15 @@ const getInquiries = async(filter, options)=>{
   return inquiries;
 }
 
+const getPendingInquiries = async(filter, options)=>{
+  // const foundedItems = await FoundedItem.paginateIt(filter, options);
+ 
+  const inquiry = await Inquiry.find({}).where({
+    'status': 'Pending'
+  })
+  return inquiry;
+}
+
 const getInquiryById = async(inquiryId)=>{
   const inquiry = await Inquiry.findById(inquiryId);
   return inquiry;
@@ -81,6 +90,7 @@ const updateInquiryStatus = async(inquiryId, updateBody) =>{
       createInquiry,
       getInquiries,
     getInquiryById,
+    getPendingInquiries,
     updateInquiryById,
     deleteInquiryById,
     updateInquiryStatus

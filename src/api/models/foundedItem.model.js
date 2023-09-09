@@ -86,25 +86,35 @@ const FoundedItemSchema = new mongoose.Schema(
       default: 'Not Delivered',
       // required: true,
     },
+    //TODO  make this point to the delivery guys later
     deliveredBy: {
       type: String,
-      // required: function(){return this.status=='Delivered'}
+      required: function(){return this.status=='Delivered'}
     },
+
+     deliveryDate: {
+      type: Date,
+    // default: Date.now(),
+      required: function(){return this.status=='Delivered'},
+      
+    },
+
     registeredBy: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: true,
       
     },
-    deliveryDate: {
-      type: Date,
-      // required: function(){return this.status=='Delivered'},
-      
+    hasInquiry: {
+      type: Boolean,
+    default: false,
+      required: function(){return this.status=='Pending'}
     },
+
     inquiryId:{
      type: mongoose.Schema.ObjectId,
       ref: "Inquiry",
-      required: function(){ return this.status=='Pending'},
+      required: function(){ return (this.status=='Pending' && this.hasInquiry==false) },
   },
    momentDate: String,
     momentDateOnly: String, 

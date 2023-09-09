@@ -52,6 +52,13 @@ const updateStatus = catchAsync(async(req, res)=>{
 })
 
 
+ const getPendingInquiries = catchAsync(async(req, res)=>{
+    const filter = pick(req.query, ['foundedDate', 'role'], 'status=Pending');
+    const options = pick(req.query, ['sortBy', 'limit', 'page']);
+
+    const result = await inquiryService.getPendingInquiries(filter, options);
+    res.send(result);
+});
 
 
 module.exports = {
@@ -60,5 +67,6 @@ module.exports = {
     getInquiry,
     updateInquiry,
     deleteInquiry,
-    updateStatus
+    updateStatus,
+    getPendingInquiries
 }

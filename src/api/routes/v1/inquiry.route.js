@@ -13,6 +13,7 @@ router
     .get( auth.auth(),validator.query(inquiryValidation.getInquiries.query),inquiryController.getInquiries)
     .post(auth.auth(),validator.body(inquiryValidation.createInquiry.body), inquiryController.createInquiry);
 
+router.get('/pending', inquiryController.getPendingInquiries) ;
 router
     .route('/:inquiryId')
     .get(validator.params(inquiryValidation.getInquiry.params), inquiryController.getInquiry)
