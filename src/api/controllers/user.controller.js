@@ -42,13 +42,18 @@ const search = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getMe = catchAsync(async(req, res)=>{
+  res.send(req.user);
+})
+
 module.exports = {
   createUser,
   getUsers,
   getUser,
   updateUser,
   deleteUser,
-  search
+  search,
+  getMe
 };
 
 

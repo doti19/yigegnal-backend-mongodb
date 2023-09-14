@@ -13,6 +13,10 @@ router
   .get(auth.auth(), validator.query(userValidation.getUsers.query), userController.getUsers);
 
 router
+  .route('/profile')
+  .get(auth.auth(), userController.getMe);
+
+router
   .route('/:userId')
   .get(auth.auth(), validator.params(userValidation.getUser.params), userController.getUser)
   .patch(auth.auth(), validator.params(userValidation.updateUser.params), validator.body(userValidation.updateUser.body), userController.updateUser)

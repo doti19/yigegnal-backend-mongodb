@@ -16,7 +16,8 @@ const {password, objectId} = require('./custom.validation');
   // GET /v1/users
   const getUsers= {
     query: Joi.object({
-      name: Joi.string(),
+      firstName: Joi.string(),
+      lastName: Joi.string(),
       role: Joi.string(),
       sortBy: Joi.string(),
       limit: Joi.number().integer(),
@@ -63,8 +64,9 @@ const {password, objectId} = require('./custom.validation');
     body: Joi.object({
       email: Joi.string().email(),
       password: Joi.string().custom(password),
-      name: Joi.string().max(128),
-      // role: Joi.array().items(Joi.string().valid("admin", "user"))
+      firstName: Joi.string().max(128),
+      lastName: Joi.string().max(128),
+      role: Joi.string().valid("db_analysist", "delivery")
 
     }).min(1),
   };

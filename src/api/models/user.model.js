@@ -45,10 +45,16 @@ const userSchema = new mongoose.Schema({
     },
     private: true, //used by the toJson plugin
   },
-  name: {
+  firstName: {
     type: String,
     maxlength: 128,
     index: true,
+    trim: true,
+  },
+  lastName: {
+    type: String,
+    maxlength: 128,
+    
     trim: true,
   },
   isEmailVerified: {

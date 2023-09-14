@@ -24,7 +24,7 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   };
 
   if(!user){
-    err.message = `The email address ${email} is not associated with any account, please register.`;
+    err.message = `The email address is not associated with any account, please register.`;
   } else if(!password){
     err.message = 'Incorrect email or password';
   }
@@ -102,6 +102,35 @@ const resetPassword = async (resetPasswordToken, newPassword) => {
   }
 };
 
+const changePassword = async(myUser, oldPassword, newPassword)=>{
+  const err = {
+    status: httpStatus.UNAUTHORIZED,
+    isPublic: true,
+  };
+  try{
+    const user = await userService.getUserById(myUser.id);
+    if(!user){
+      console.log('no user found with that id');
+      throw new Error();
+    }
+    console.log(oldPassword);
+    if (await user.isPasswordMatch(oldPassword)) {
+      console.log('i should be here');
+    await userService.updateUserById(user.id, {password: newPassword});
+    await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });
+} else{
+
+err.message = 'Incorrect password';
+console.log('incorrect password');
+throw new ApiError(err);
+}
+
+  }catch(error){
+    console.log(error)
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password change Failed');
+  }
+}
+
 /**
  * Verify email
  * @param {string} verifyEmailToken
@@ -131,4 +160,5 @@ module.exports = {
   refreshAuth,
   resetPassword,
   verifyEmail,
+  changePassword
 };
