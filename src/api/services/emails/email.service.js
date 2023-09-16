@@ -106,9 +106,9 @@ exports.sendVerificationEmail = async (user, link) => {
         to: user.email,
       },
       locals: {
-        productName: "Test App",
-        name: user.name,
-        link: link,
+        productName: "Yigegnal PLC",
+        name: user.firstName,
+        link: `192.168.8.139:3000/v1/auth/verify-email?token=${link}`,
       },
     }).then(()=> console.log('here is the link=>.'+ link))
     .catch((error) => console.log("error sending account verification email: " + error));

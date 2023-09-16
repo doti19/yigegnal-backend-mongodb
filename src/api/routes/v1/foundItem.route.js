@@ -8,19 +8,19 @@ const router = express.Router();
 
 router
     .route('/')
-    .get( validator.query(foundedItemValidation.getFoundedItems.query),foundedItemController.getFoundedItems)
-    .post(auth.auth(),validator.body(foundedItemValidation.createFoundedItem.body), foundedItemController.createFoundedItem);
-router.get('/not-delivered', foundedItemController.getNotDeliveredFoundItems) ;
+    .get(auth.auth(),auth.emailVerified(), validator.query(foundedItemValidation.getFoundedItems.query),foundedItemController.getFoundedItems)
+    .post(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin', 'db_analysist']),validator.body(foundedItemValidation.createFoundedItem.body), foundedItemController.createFoundedItem);
+router.get('/not-delivered',auth.auth(),auth.emailVerified(), foundedItemController.getNotDeliveredFoundItems) ;
     router
     .route('/:foundedItemId')
-    .get(validator.params(foundedItemValidation.getFoundedItem.params), foundedItemController.getFoundedItem)
-    .patch(validator.params(foundedItemValidation.updateFoundedItem.params),validator.body(foundedItemValidation.updateFoundedItem.body),foundedItemController.updateFoundedItem)
-    .delete(validator.params(foundedItemValidation.deleteFoundedItem.params),foundedItemController.deleteFoundedItem);
+    .get(auth.auth(),auth.emailVerified(),validator.params(foundedItemValidation.getFoundedItem.params), foundedItemController.getFoundedItem)
+    .patch(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin', 'db_analysist']),validator.params(foundedItemValidation.updateFoundedItem.params),validator.body(foundedItemValidation.updateFoundedItem.body),foundedItemController.updateFoundedItem)
+    .delete(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin', 'db_analysist']),validator.params(foundedItemValidation.deleteFoundedItem.params),foundedItemController.deleteFoundedItem);
 
    
   
 
-router.patch('/status/:foundedItemId', validator.params(foundedItemValidation.updateFoundedItemStatus.params),validator.body(foundedItemValidation.updateFoundedItemStatus.body), foundedItemController.updateStatus);
+router.patch('/status/:foundedItemId',auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin', 'db_analysist']), validator.params(foundedItemValidation.updateFoundedItemStatus.params),validator.body(foundedItemValidation.updateFoundedItemStatus.body), foundedItemController.updateStatus);
 
 
     module.exports = router;

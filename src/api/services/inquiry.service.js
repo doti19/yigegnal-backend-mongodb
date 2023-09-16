@@ -9,6 +9,8 @@ const ApiError = require('../errors/api-error');
  * @returns {Promise<item>}
  */
 const createInquiry = async (inquiryBody, user) => {
+  const isIt = await Catagory.isCatagoryFound(inquiryBody.item.catagory);
+   if (!isIt) throw new ApiError({status: httpStatus.BAD_REQUEST, message:'invalid catagory name '});
   inquiryBody.registeredBy = user.id;
       return await Inquiry.create(inquiryBody);
     };
@@ -35,6 +37,7 @@ const getInquiryById = async(inquiryId)=>{
 }
 
 const updateInquiryById= async(InquiryId, updateBody) =>{
+ 
   const inquiry = await getInquiryById(InquiryId);
   if(!inquiry){
     throw new ApiError(httpStatus.NOT_FOUND, 'Inquiry not found');
@@ -43,6 +46,8 @@ const updateInquiryById= async(InquiryId, updateBody) =>{
   // if(inquiry.isFound || inquiry.status=="Found"){
   //   throw new ApiError(httpStatus., 'Inquiry not found');
   // }
+   const isIt = await Catagory.isCatagoryFound(updateBody.item.catagory);
+   if (!isIt) throw new ApiError({status: httpStatus.BAD_REQUEST, message:'invalid catagory name '});
   Object.assign(inquiry.item, updateBody.item);
   Object.assign(inquiry.owner, updateBody.owner);
   // Object.assign(inquiry, updateBody);

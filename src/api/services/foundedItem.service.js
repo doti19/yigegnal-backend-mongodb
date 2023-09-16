@@ -2,6 +2,8 @@ const httpStatus = require('http-status');
 const { FoundedItem } = require('../models');
 const {Catagory} = require('../models');
 const ApiError = require('../errors/api-error');
+const {customAlphabet} = require("nanoid/non-secure");
+const nanoid = customAlphabet('1234567890', 6);
 
 
 
@@ -12,7 +14,7 @@ const createFoundedItem = async (foundedItemBody, user) => {
 const isIt = await Catagory.isCatagoryFound(foundedItemBody.item.catagory);
    if (!isIt) throw new ApiError({status: httpStatus.BAD_REQUEST, message:'invalid catagory name '});
   foundedItemBody.registeredBy = user.id;
-  console.log('created: -');
+//  foundedItemBody.foundedItemId = nanoid();
 
   hello =  await FoundedItem.create(foundedItemBody);
   console.log(hello)

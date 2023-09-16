@@ -10,17 +10,17 @@ const router = express.Router();
 
 router
     .route('/')
-    .get( auth.auth(),validator.query(inquiryValidation.getInquiries.query),inquiryController.getInquiries)
-    .post(auth.auth(),validator.body(inquiryValidation.createInquiry.body), inquiryController.createInquiry);
+    .get( auth.auth(),auth.emailVerified(),validator.query(inquiryValidation.getInquiries.query),inquiryController.getInquiries)
+    .post(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin', 'db_analysist']),validator.body(inquiryValidation.createInquiry.body), inquiryController.createInquiry);
 
-router.get('/pending', inquiryController.getPendingInquiries) ;
+router.get('/pending', auth.auth(),auth.emailVerified(),inquiryController.getPendingInquiries) ;
 router
     .route('/:inquiryId')
-    .get(validator.params(inquiryValidation.getInquiry.params), inquiryController.getInquiry)
-    .patch(validator.params(inquiryValidation.updateInquiry.params),validator.body(inquiryValidation.updateInquiry.body),inquiryController.updateInquiry)
-    .delete(validator.params(inquiryValidation.deleteInquiry.params),inquiryController.deleteInquiry);
+    .get(auth.auth(),auth.emailVerified(),validator.params(inquiryValidation.getInquiry.params), inquiryController.getInquiry)
+    .patch(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin', 'db_analysist']),validator.params(inquiryValidation.updateInquiry.params),validator.body(inquiryValidation.updateInquiry.body),inquiryController.updateInquiry)
+    .delete(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin', 'db_analysist']),validator.params(inquiryValidation.deleteInquiry.params),inquiryController.deleteInquiry);
 
-router.patch('/status/:inquiryId', validator.params(inquiryValidation.updateInquiryStatus.params),validator.body(inquiryValidation.updateInquiryStatus.body), inquiryController.updateStatus);
+router.patch('/status/:inquiryId', auth.auth(),auth.emailVerified(),validator.params(inquiryValidation.updateInquiryStatus.params),validator.body(inquiryValidation.updateInquiryStatus.body), inquiryController.updateStatus);
 
 
     module.exports = router;

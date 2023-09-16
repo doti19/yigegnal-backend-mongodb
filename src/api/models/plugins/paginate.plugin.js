@@ -32,8 +32,8 @@ const paginate = (schema) => {
       } else {
         sort = 'createdAt';
       }
-    
-      const limit = options.limit && parseInt(options.limit, 10) > 0 ? parseInt(options.limit, 10) : 10;
+      sort = '-createdAt';
+      const limit = options.limit && parseInt(options.limit, 10) > 0 ? parseInt(options.limit, 100) : 100;
       const page = options.page && parseInt(options.page, 10) > 0 ? parseInt(options.page, 10) : 1;
       const skip = (page - 1) * limit;
 
@@ -41,10 +41,9 @@ const paginate = (schema) => {
       
       newFilter = newFilter.replace(/\b(gt|gte|lt|lte|eq|ne)\b/g, match => `$${match}`);
       newFilter=JSON.parse(newFilter);
-      console.log('hello '+ newFilter);
       const countPromise = this.countDocuments(newFilter).exec();
       // let docsPromise = this.find(newFilter).sort(sort).skip(skip).limit(limit);
-      let docsPromise = this.find(newFilter);
+      let docsPromise = this.find(newFilter).sort(sort);
   
       if (options.populate) {
         options.populate.split(',').forEach((populateOption) => {

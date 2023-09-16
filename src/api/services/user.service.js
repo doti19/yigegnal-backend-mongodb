@@ -7,13 +7,25 @@ const ApiError = require('../errors/api-error');
  * @param {Object} userBody
  * @returns {Promise<User>}
  */
-const createUser = async (userBody) => {
+const createUser = async (userBody, user) => {
+  console.log(user.role);
+  if(user.role=='super_admin' || user.role=='admin') {
+    
+   
+
+  if(user.role=='admin'&& (userBody.role!='admin' ||userBody.role!='super_admin')){
+    throw new ApiError({status: httpStatus.FORBIDDEN, message: 'you cant create a user with that role'}); 
+
+  }
   if (await User.isEmailTaken(userBody.email)) {
     throw new ApiError({status: httpStatus.BAD_REQUEST, message:'Email already taken', isPublic: true});
   }
 
 
   return User.create(userBody);
+   }else{
+    throw new ApiError({status: httpStatus.FORBIDDEN, message: 'you cant create a user'}); 
+   }
 };
 
 /**

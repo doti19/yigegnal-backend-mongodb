@@ -18,6 +18,7 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   // }
   // return user;
   const user = await userService.getUserByEmail(email);
+
   const err = {
     status: httpStatus.UNAUTHORIZED,
     isPublic: true,
@@ -35,8 +36,10 @@ const loginUserWithEmailAndPassword = async (email, password) => {
       //   err.message = 'Please verify your email address first.';
       //   throw new ApiError(err);
       // }else{
-        
+       
+
         return  user;
+
         
       // }
     }

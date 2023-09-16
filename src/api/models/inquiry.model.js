@@ -2,9 +2,15 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const catagorySchema = require("./category.model").Schema;
 const { toJSON, paginate } = require('./plugins');
-
+const {customAlphabet} = require("nanoid/non-secure");
+const nanoid = customAlphabet('1234567890', 5);
 const InquirySchema = new mongoose.Schema({
      item: {
+      inquiryId: {
+        type: String,
+        unique: true,
+        default: nanoid(),
+      },
       catagory: {
         type: String,
         required: true,

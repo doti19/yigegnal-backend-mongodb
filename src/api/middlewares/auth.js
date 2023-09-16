@@ -36,7 +36,7 @@ const auth = (...requiredRights) => async (req, res, next) => {
     .catch((err) => next(err));
 };
 
-const restrictTo = (...roles) => 
+const restrictTo = (roles) => 
   (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
@@ -46,8 +46,20 @@ const restrictTo = (...roles) =>
     next();
   
 };
+const emailVerified = () => 
+  (req, res, next) => {
+    
+    if (!req.user.isEmailVerified) {
+      return next(
+        new ApiError({status: FORBIDDEN,message:"Please verify your email first"})
+      );
+    }
+    next();
+  
+};
 module.exports = {
   auth,
   restrictTo,
+  emailVerified,
 }
 // module.exports = auth;

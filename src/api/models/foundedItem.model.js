@@ -3,12 +3,19 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const catagorySchema = require("./category.model").Schema;
 const { toJSON, paginate } = require('./plugins');
+const {customAlphabet} = require("nanoid/non-secure");
+const nanoid = customAlphabet('1234567890', 6);
 const FoundedItemSchema = new mongoose.Schema(
   {
     hasOwner: {
       type: Boolean,
       required: true,
       // default: false,
+    },
+    foundedItemId: {
+      type: String,
+      unique: true,
+     required: true, default: nanoid(),
     },
     owner: {
       firstName: {

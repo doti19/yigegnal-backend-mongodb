@@ -10,14 +10,14 @@ const router = express.Router();
 
 router
     .route('/')
-    .get( auth.auth(),catagoryController.getCatagories)
-    .post(validator.body(catagoryValidation.createCatagory.body), catagoryController.createCatagory);
+    .get( auth.auth(),auth.emailVerified(),catagoryController.getCatagories)
+    .post(auth.auth(),auth.emailVerified(), auth.restrictTo(["super_admin", "admin"]),validator.body(catagoryValidation.createCatagory.body), catagoryController.createCatagory);
 
 router
     .route('/:catagoryId')
-    .get(validator.params(catagoryValidation.getCatagory.params), catagoryController.getCatagory)
-    .patch(validator.params(catagoryValidation.updateCatagory.params),validator.body(catagoryValidation.updateCatagory.body),catagoryController.updateCatagory)
-    .delete(validator.params(catagoryValidation.deleteCatagory.params),catagoryController.deleteCatagory);
+    .get(auth.auth(),auth.emailVerified(), auth.restrictTo(["super_admin", "admin"]),validator.params(catagoryValidation.getCatagory.params), catagoryController.getCatagory)
+    .patch(auth.auth(),auth.emailVerified(), auth.restrictTo(["super_admin", "admin"]),validator.params(catagoryValidation.updateCatagory.params),validator.body(catagoryValidation.updateCatagory.body),catagoryController.updateCatagory)
+    .delete(auth.auth(),auth.emailVerified(), auth.restrictTo(["super_admin", "admin"]),validator.params(catagoryValidation.deleteCatagory.params),catagoryController.deleteCatagory);
 
 
 

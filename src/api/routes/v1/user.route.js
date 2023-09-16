@@ -9,8 +9,8 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(auth.auth(), validator.body(userValidation.createUser.body), userController.createUser)
-  .get(auth.auth(), validator.query(userValidation.getUsers.query), userController.getUsers);
+  // .post(auth.auth(),auth.restrictTo(['super_admin','admin']), validator.body(userValidation.createUser.body), userController.createUser)
+  .get(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin']), validator.query(userValidation.getUsers.query), userController.getUsers);
 
 router
   .route('/profile')
@@ -18,13 +18,13 @@ router
 
 router
   .route('/:userId')
-  .get(auth.auth(), validator.params(userValidation.getUser.params), userController.getUser)
-  .patch(auth.auth(), validator.params(userValidation.updateUser.params), validator.body(userValidation.updateUser.body), userController.updateUser)
-  .delete(auth.auth(), validator.params(userValidation.deleteUser.params), userController.deleteUser);
+  .get(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin']), validator.params(userValidation.getUser.params), userController.getUser)
+  .patch(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin']), validator.params(userValidation.updateUser.params), validator.body(userValidation.updateUser.body), userController.updateUser)
+  .delete(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin']), validator.params(userValidation.deleteUser.params), userController.deleteUser);
 
 router
   .route('/search/:keyword')
-  .get(auth.auth(), userController.search);
+  .get(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin']), userController.search);
 
 module.exports = router;
 
