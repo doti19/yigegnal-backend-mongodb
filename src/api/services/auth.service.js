@@ -93,7 +93,7 @@ const refreshAuth = async (refreshToken) => {
 const resetPassword = async (resetPasswordToken, newPassword) => {
   try {
     const resetPasswordTokenDoc = await tokenService.verifyToken(resetPasswordToken, tokenTypes.RESET_PASSWORD);
-    console.log('heyooo');
+    console.log('resetting');
     const user = await userService.getUserById(resetPasswordTokenDoc.user);
     if (!user) {
       throw new Error();
@@ -141,6 +141,8 @@ throw new ApiError(err);
  */
 const verifyEmail = async (verifyEmailToken) => {
   try {
+    console.log('here is the token');
+    console.log(verifyEmailToken);
     const verifyEmailTokenDoc = await tokenService.verifyToken(verifyEmailToken, tokenTypes.VERIFY_EMAIL);
     const user = await userService.getUserById(verifyEmailTokenDoc.user);
     if (!user ) {

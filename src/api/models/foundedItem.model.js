@@ -95,7 +95,8 @@ const FoundedItemSchema = new mongoose.Schema(
     },
     //TODO  make this point to the delivery guys later
     deliveredBy: {
-      type: String,
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
       required: function(){return this.status=='Delivered'}
     },
 
@@ -121,7 +122,7 @@ const FoundedItemSchema = new mongoose.Schema(
     inquiryId:{
      type: mongoose.Schema.ObjectId,
       ref: "Inquiry",
-      required: function(){ return (this.status=='Pending' && this.hasInquiry==false) },
+      required: function(){ return (this.status=='Pending' && this.hasInquiry==true) },
   },
    momentDate: String,
     momentDateOnly: String, 

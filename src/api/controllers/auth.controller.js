@@ -5,7 +5,7 @@ const User = require("../models/user.model");
 const token = require("../models/token.model");
 // const PasswordResetToken = require("../models/passwordResetToken.model");
 const { jwtExpirationInterval } = require("../../config/config");
-const APIError = require("../errors/api-error");
+const ApiError = require("../errors/api-error");
 const emailProvider = require("../services/emails/email.service");
 const { TokenExpiredError } = require("jsonwebtoken");
 // const { token } = require("morgan");
@@ -117,10 +117,18 @@ const refreshTokens = catchAsync(async (req, res) => {
 });
 
 const forgotPassword = catchAsync(async (req, res) => {
+   const user = await userService.getUserByEmail(req.body.email);
+    // user is not found into database
+   console.log(user)
+      
+
+    if (!user) {
+      return new ApiError({status: httpStatus.NOT_FOUND, message: 'unable to find a user with that email'});
+    }
+  
   const resetPasswordToken = await tokenService.generateResetPasswordToken(
     req.body.email
   );
-  console.log('this is my user');
 
   await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
   res.status(httpStatus.NO_CONTENT).send();
@@ -132,6 +140,16 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 const sendVerificationEmail = catchAsync(async (req, res) => {
+  const user = await userService.getUserByEmail(req.user.email);
+    // user is not found into database
+    if (!user) {
+      return new ApiError({status: httpStatus.NOT_FOUND, message: 'unable to find a user with that email'});
+    }
+    // user has been already verified
+    else if (user.isVerified) {
+      return new ApiError({status: httpStatus.UNAUTHORIZED, message: 'this user is already verified, please login to continue'});
+    }
+
   const verifyEmailToken = await tokenService.generateVerifyEmailToken(
     req.user.email
   );

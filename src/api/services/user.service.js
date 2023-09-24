@@ -13,7 +13,7 @@ const createUser = async (userBody, user) => {
     
    
 
-  if(user.role=='admin'&& (userBody.role!='admin' ||userBody.role!='super_admin')){
+  if(user.role=='admin'&& (userBody.role=='admin' ||userBody.role=='super_admin')){
     throw new ApiError({status: httpStatus.FORBIDDEN, message: 'you cant create a user with that role'}); 
 
   }
@@ -97,6 +97,17 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+const getDeliveryUsers = async(filter, options)=>{
+  // const foundedItems = await FoundedItem.paginateIt(filter, options);
+ 
+  const users = await User.find({}).where({
+    'role': 'delivery',
+    'isEmailVerified': true,
+  })
+  return users;
+}
+
+
 const search = async(keyword)=>{
 const result = User.find(
   {
@@ -114,7 +125,9 @@ module.exports = {
   queryUsers,
   getUserById,
   getUserByEmail,
+  getDeliveryUsers,
   updateUserById,
   deleteUserById,
   search,
+
 };

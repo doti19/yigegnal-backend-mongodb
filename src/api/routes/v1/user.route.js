@@ -11,6 +11,7 @@ router
   .route('/')
   // .post(auth.auth(),auth.restrictTo(['super_admin','admin']), validator.body(userValidation.createUser.body), userController.createUser)
   .get(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin']), validator.query(userValidation.getUsers.query), userController.getUsers);
+router.get('/delivery', auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin', 'db_analysist']),userController.getDeliveryUsers) ;
 
 router
   .route('/profile')

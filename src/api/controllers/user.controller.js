@@ -44,16 +44,25 @@ const search = catchAsync(async (req, res) => {
 
 const getMe = catchAsync(async(req, res)=>{
   res.send(req.user);
-})
+});
+
+const getDeliveryUsers = catchAsync(async(req, res)=>{
+    const filter = pick(req.query, [, 'role'], 'role=delivery');
+    const options = pick(req.query, ['sortBy', 'limit', 'page']);
+
+    const result = await userService.getDeliveryUsers(filter, options);
+    res.send(result);
+});
 
 module.exports = {
   createUser,
   getUsers,
   getUser,
+  getDeliveryUsers,
   updateUser,
   deleteUser,
   search,
-  getMe
+  getMe,
 };
 
 

@@ -53,13 +53,13 @@ exports.sendResetPasswordEmail = async (userEmail, token) => {
         to: userEmail,
       },
       locals: {
-        productName: "Test App",
+        productName: "Yigenal",
         // passwordResetUrl should be a URL to your app that displays a view where they
         // can enter a new password along with passing the resetToken in the params
-        passwordResetUrl: `https://your-app/new-password/view?resetToken=${token}`,
+        passwordResetUrl: `http://192.168.8.139:4200/#/reset-password?resetToken=${token}`,
       },
     }).then(()=> console.log('passwordResetUrl is: '+ token))
-    .catch(() => console.log("error sending password reset email"));
+    .catch((err) => console.log("error sending password reset email"+ err));
 };
 
 exports.sendPasswordChangeEmail = async (user) => {

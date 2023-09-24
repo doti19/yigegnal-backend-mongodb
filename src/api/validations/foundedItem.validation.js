@@ -119,7 +119,7 @@ const updateFoundedItemStatus = {
    
     deliveredBy: Joi.when("status", {
      is: Joi.string().valid("Delivered"),
-     then: Joi.string(),
+     then: Joi.string().custom(objectId).required(),
      otherwise: Joi.valid(null),
     }),
 
