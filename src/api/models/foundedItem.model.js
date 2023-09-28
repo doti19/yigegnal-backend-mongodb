@@ -15,7 +15,7 @@ const FoundedItemSchema = new mongoose.Schema(
     foundedItemId: {
       type: String,
       unique: true,
-     required: true, default: nanoid(),
+     required: true, default:()=> nanoid(),
     },
     owner: {
       firstName: {

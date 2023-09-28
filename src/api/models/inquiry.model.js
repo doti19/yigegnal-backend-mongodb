@@ -9,7 +9,7 @@ const InquirySchema = new mongoose.Schema({
       inquiryId: {
       type: String,
       unique: true,
-     required: true, default: nanoid(),
+     required: true, default: ()=>nanoid(),
     },
       catagory: {
         type: String,

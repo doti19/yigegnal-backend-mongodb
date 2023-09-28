@@ -68,7 +68,7 @@ const deleteFoundedItemById = async(foundedItemId) =>{
   return foundedItem;
 }
 
-const updateFoundedItemStatus = async(foundedItemId, updateBody) =>{
+const updateFoundedItemStatus = async(foundedItemId, user, updateBody) =>{
   const foundedItem = await getFoundedItemById(foundedItemId);
   if(!foundedItem){
     throw new ApiError(httpStatus.NOT_FOUND, 'Item not found ' );
@@ -79,9 +79,15 @@ const updateFoundedItemStatus = async(foundedItemId, updateBody) =>{
     throw new ApiError({status: httpStatus.BAD_REQUEST, message:'Nothing to Edit here'});
   }
   if(updateBody.status=='Delivered' && foundedItem.status != "Delivered"){
+    if(user.role== "admin"|| user.role=="super_admin"){
+
     foundedItem.status = 'Delivered';
     foundedItem.deliveredBy= updateBody.deliveredBy;
    foundedItem.deliveryDate = Date.now();
+    }else{
+      throw new ApiError({status: httpStatus.UNAUTHORIZED, message:'You are not allowed to do that, please contact your administrator'});
+    }
+
   } else if(updateBody.status=='Pending' && foundedItem.status !="Pending"){
 
     if(foundedItem.status=="Delivered"){

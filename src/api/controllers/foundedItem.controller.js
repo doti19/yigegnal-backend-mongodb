@@ -37,7 +37,7 @@ const deleteFoundedItem = catchAsync(async(req, res)=>{
 });
 
 const updateStatus = catchAsync(async(req, res)=>{
-    const foundedItem = await foundedItemService.updateFoundedItemStatus(req.params.foundedItemId, req.body);
+    const foundedItem = await foundedItemService.updateFoundedItemStatus(req.params.foundedItemId, req.user, req.body);
     res.send(foundedItem)
 });
 
