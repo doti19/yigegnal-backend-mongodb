@@ -54,11 +54,16 @@ const getDeliveryUsers = catchAsync(async(req, res)=>{
     res.send(result);
 });
 
+const getDeliveryUser = catchAsync(async(req, res)=>{
+  const result = await userService.getDeliveryUser(req.params.userId);
+  res.send(result);
+});
 module.exports = {
   createUser,
   getUsers,
   getUser,
   getDeliveryUsers,
+  getDeliveryUser,
   updateUser,
   deleteUser,
   search,

@@ -12,7 +12,7 @@ router
   // .post(auth.auth(),auth.restrictTo(['super_admin','admin']), validator.body(userValidation.createUser.body), userController.createUser)
   .get(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin']), validator.query(userValidation.getUsers.query), userController.getUsers);
 router.get('/delivery', auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin', 'db_analysist']),userController.getDeliveryUsers) ;
-
+router.get('/delivery/:userId', auth.auth(), auth.emailVerified(),userController.getDeliveryUser);
 router
   .route('/profile')
   .get(auth.auth(), userController.getMe);
@@ -22,7 +22,7 @@ router
   .get(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin']), validator.params(userValidation.getUser.params), userController.getUser)
   .patch(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin']), validator.params(userValidation.updateUser.params), validator.body(userValidation.updateUser.body), userController.updateUser)
   .delete(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin']), validator.params(userValidation.deleteUser.params), userController.deleteUser);
-
+router
 router
   .route('/search/:keyword')
   .get(auth.auth(),auth.emailVerified(),auth.restrictTo(['super_admin','admin']), userController.search);

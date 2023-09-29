@@ -107,6 +107,18 @@ const getDeliveryUsers = async(filter, options)=>{
   return users;
 }
 
+const getDeliveryUser = async(userId)=>{
+  // const foundedItems = await FoundedItem.paginateIt(filter, options);
+  const user = await getUserById(userId);
+  if(!user){
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  } else if(user.role !="delivery"){
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid Delivery User');
+
+  }
+  return user;
+}
+ 
 
 const search = async(keyword)=>{
 const result = User.find(
@@ -126,6 +138,7 @@ module.exports = {
   getUserById,
   getUserByEmail,
   getDeliveryUsers,
+  getDeliveryUser,
   updateUserById,
   deleteUserById,
   search,
