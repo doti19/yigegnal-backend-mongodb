@@ -42,12 +42,12 @@ const updateInquiry = catchAsync(async(req, res)=>{
 });
 
 const deleteInquiry = catchAsync(async(req, res)=>{
-    await inquiryService.deleteInquiryById(req.params.inquiryId);
+    await inquiryService.deleteInquiryById(req.params.inquiryId, req.user);
     res.status(httpStatus.NO_CONTENT).send();
 });
 
 const updateStatus = catchAsync(async(req, res)=>{
-    const inquiry = await inquiryService.updateInquiryStatus(req.params.inquiryId, req.body);
+    const inquiry = await inquiryService.updateInquiryStatus(req.params.inquiryId,req.user,false, req.body);
     res.send(inquiry)
 })
 

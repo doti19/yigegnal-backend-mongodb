@@ -32,12 +32,12 @@ const updateFoundedItem = catchAsync(async(req, res)=>{
 });
 
 const deleteFoundedItem = catchAsync(async(req, res)=>{
-    await foundedItemService.deleteFoundedItemById(req.params.foundedItemId);
+    await foundedItemService.deleteFoundedItemById(req.params.foundedItemId, req.user);
     res.status(httpStatus.NO_CONTENT).send();
 });
 
 const updateStatus = catchAsync(async(req, res)=>{
-    const foundedItem = await foundedItemService.updateFoundedItemStatus(req.params.foundedItemId, req.user, req.body);
+    const foundedItem = await foundedItemService.updateFoundedItemStatus(req.params.foundedItemId, req.user,false, req.body);
     res.send(foundedItem)
 });
 

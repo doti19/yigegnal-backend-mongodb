@@ -1,6 +1,9 @@
 const httpStatus = require('http-status');
 const { FoundedItem } = require('../models');
+const { Inquiry } = require('../models');
 const {Catagory} = require('../models');
+// const { inquiryService } = require('../services');
+
 const ApiError = require('../errors/api-error');
 const {customAlphabet} = require("nanoid/non-secure");
 const nanoid = customAlphabet('1234567890', 6);
@@ -57,42 +60,82 @@ const updateFoundedItemById= async(foundedItemId, updateBody) =>{
 
 }
 
-const deleteFoundedItemById = async(foundedItemId) =>{
+const deleteFoundedItemById = async(foundedItemId,user) =>{
+const { inquiryService } = require('.');
+
   const foundedItem = await getFoundedItemById(foundedItemId);
 
 
   if(!foundedItem){
-    throw new ApiError(httpStatus.NOT_FOUND, 'Item Not found');
+    throw new ApiError({status: httpStatus.NOT_FOUND, message:'Item Not found'});
+  }
+  if(foundedItem.hasInquiry ){
+    console.log("it has inquiry");
+    
+    await inquiryService.updateInquiryStatus(
+      foundedItem.inquiryId,
+      user,
+      true,
+      {
+        status: 'Pending'
+      }
+    );
   }
   await foundedItem.deleteOne();
   return foundedItem;
 }
 
-const updateFoundedItemStatus = async(foundedItemId, user, updateBody) =>{
+const updateFoundedItemStatus = async(foundedItemId, user,fromInquiry, updateBody) =>{
+const { inquiryService } = require('.');
+//TODO fix this later, the circular dependency thing
+
   const foundedItem = await getFoundedItemById(foundedItemId);
-  if(!foundedItem){
-    throw new ApiError(httpStatus.NOT_FOUND, 'Item not found ' );
+  if(!foundedItem ){
+    if(!fromInquiry){
+
+      throw new ApiError({status:httpStatus.NOT_FOUND, message:'Item not found' });
+    }else{
+      return;
+    }
   }
-  console.log('original');
-  console.log(foundedItem);
-  if(foundedItem.status == updateBody.status){
+  
+  if(foundedItem.status=="Delivered"&& !(user.role=='admin'|| user.role=="super_admin")){
+      throw new ApiError({status: httpStatus.FORBIDDEN, message:'You are not allowed to change a delivered item'});
+  }
+  if(foundedItem.status == updateBody.status && !fromInquiry){
     throw new ApiError({status: httpStatus.BAD_REQUEST, message:'Nothing to Edit here'});
   }
   if(updateBody.status=='Delivered' && foundedItem.status != "Delivered"){
-    if(user.role== "admin"|| user.role=="super_admin"){
 
+    if(user.role== "admin"|| user.role=="super_admin" || user.role=='db_analysist'){
+      // if(foundedItem.hasInquiry && !fromInquiry){
+      //   console.log('item has inquiry');
+      //   await inquiryService.updateInquiryStatus(foundedItem.inquiryId,true, user, {
+      //     status: "Pending"
+      //   })
+      // }
+      // why the fuck would i need the above code??????
     foundedItem.status = 'Delivered';
     foundedItem.deliveredBy= updateBody.deliveredBy;
    foundedItem.deliveryDate = Date.now();
     }else{
-      throw new ApiError({status: httpStatus.UNAUTHORIZED, message:'You are not allowed to do that, please contact your administrator'});
+      throw new ApiError({status: httpStatus.FORBIDDEN, message:'You are not allowed to do that, please contact your administrator'});
     }
 
   } else if(updateBody.status=='Pending' && foundedItem.status !="Pending"){
 
-    if(foundedItem.status=="Delivered"){
+    if(foundedItem.status=="Delivered" ){
       foundedItem.deliveredBy = undefined;
       foundedItem.deliveryDate = undefined;
+    } 
+    if(updateBody.hasInquiry && !fromInquiry){
+      console.log('am here calliing');
+      console.log(updateBody);
+    
+      await inquiryService.updateInquiryStatus(updateBody.inquiryId,user,true, {
+        status: "Found",
+        foundedItemId: foundedItemId,
+      });
     }
 console.log('am heree');
     foundedItem.status = 'Pending';
@@ -102,6 +145,12 @@ console.log('am heree');
     console.log(foundedItem);
 
   } else if(updateBody.status == 'Not Delivered' && foundedItem.status !='Not Delivered'){
+    if(foundedItem.hasInquiry && !fromInquiry){
+      console.log('item has inquiry');
+      await inquiryService.updateInquiryStatus(foundedItem.inquiryId,true, user, {
+        status: "Pending"
+      })
+    }
     if(foundedItem.status=="Delivered"){
       foundedItem.deliveredBy = undefined;
      foundedItem.deliveryDate= undefined;
