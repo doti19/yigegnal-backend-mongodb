@@ -7,16 +7,22 @@ const logger = require("../../../config/logger");
 // SMTP is also the protocol used between almost all email hosts, so its truly universal.
 // if you dont want to use SMTP you can create your own transport here
 // such as an email service API or nodemailer-sendgrid-transport
-
+// console.log("about email");
+// console.log(emailConfig.smtp.port);
+// console.log(emailConfig.smtp.host);
 const transporter = nodemailer.createTransport({
-  // port: emailConfig.port,
-  // host: emailConfig.host,
-  service: "gmail",
+  port: emailConfig.smtp.port,
+  host: emailConfig.smtp.host,
+  name: "www.yigegnal.com",
+  // service: "gmail",
   auth: {
-    user: emailConfig.auth.username,
-    pass: emailConfig.auth.password,
+    user: "admin101@yigegnal.com",
+    pass: "Testasdfasdf101",
+    
+    // user: emailConfig.auth.username,
+    // pass: emailConfig.auth.password,
   },
-  // secure: false, // upgrades later with STARTTLS -- change this based on the PORT
+  secure: true, // upgrades later with STARTTLS -- change this based on the PORT
 });
 
 // const transporter = nodemailer.createTransport(emailConfig.smtp);
@@ -39,7 +45,7 @@ exports.sendResetPasswordEmail = async (userEmail, token) => {
   const email = new Email({
     views: { root: __dirname },
     message: {
-      from: "saminassaminas@gmail.com",
+      from: "admin101@yigegnal.com",
     },
     // uncomment below to send emails in development/test env:
     send: true,
@@ -89,10 +95,13 @@ exports.sendPasswordChangeEmail = async (user) => {
 };
 
 exports.sendVerificationEmail = async (user, link) => {
+  console.log('verifying');
+  
+  console.log(user.email);
   const email = new Email({
     views: { root: __dirname },
     message: {
-      from: "saminassaminas@gmail.com",
+      from: "admin101@yigegnal.com",
     },
     // uncomment below to send emails in development/test env:
     send: true,

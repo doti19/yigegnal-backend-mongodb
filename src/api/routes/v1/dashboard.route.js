@@ -4,7 +4,7 @@ const dashboardController = require('../../controllers/dashboard.controller');
 
 const router = express.Router();
 
-router.get('/',auth.auth(), dashboardController.dashboard);
+router.get('/',auth.auth(),auth.emailVerified(), dashboardController.dashboard);
 
 
 module.exports = router;

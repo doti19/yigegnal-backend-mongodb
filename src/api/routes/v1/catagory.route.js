@@ -10,7 +10,7 @@ const router = express.Router();
 
 router
     .route('/')
-    .get( auth.auth(),auth.emailVerified(),catagoryController.getCatagories)
+    .get( auth.auth(),auth.emailVerified(),validator.query(catagoryValidation.getCatagory.query),catagoryController.getCatagories)
     .post(auth.auth(),auth.emailVerified(), auth.restrictTo(["super_admin", "admin"]),validator.body(catagoryValidation.createCatagory.body), catagoryController.createCatagory);
 
 router

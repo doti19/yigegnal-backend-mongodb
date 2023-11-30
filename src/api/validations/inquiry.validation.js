@@ -12,7 +12,7 @@ const createInquiry = {
            
           item: Joi.object({
             catagory: Joi.string().required(),
-            lostPlace: Joi.string().required(),
+            lostPlace: Joi.string(),
             lostDate: Joi.date().required(),
             detail: Joi.string(),
           }),

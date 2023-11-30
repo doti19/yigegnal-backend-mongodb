@@ -140,7 +140,9 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 const sendVerificationEmail = catchAsync(async (req, res) => {
-  const user = await userService.getUserByEmail(req.user.email);
+  // console.log()
+  const user = await userService.getUserByEmail(req.body.email);
+  
     // user is not found into database
     if (!user) {
       return new ApiError({status: httpStatus.NOT_FOUND, message: 'unable to find a user with that email'});
@@ -151,9 +153,9 @@ const sendVerificationEmail = catchAsync(async (req, res) => {
     }
 
   const verifyEmailToken = await tokenService.generateVerifyEmailToken(
-    req.user.email
+    user.email
   );
-  await emailService.sendVerificationEmail(req.user, verifyEmailToken);
+  await emailService.sendVerificationEmail(user, verifyEmailToken);
   res.status(httpStatus.NO_CONTENT).send();
 });
 

@@ -16,6 +16,14 @@ const getCatagory = {
     params: Joi.object({
       catagoryId: Joi.string().custom(objectId).required(),
     }),
+    query: Joi.object({
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer().min(1),
+    perPage: Joi.number().integer().min(1).max(100),
+    status: Joi.string(),
+    
+    }),
   
 };
 

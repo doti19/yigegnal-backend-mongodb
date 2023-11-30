@@ -12,8 +12,8 @@ const createCatagory = async (catagoryBody) => {
       return await Catagory.create(catagoryBody);
     };
   
-const getCatagories = async()=>{
-  const catagories = await Catagory.find();
+const getCatagories = async(filter, options)=>{
+  const catagories = await Catagory.paginateIt({},[]);
 
   return catagories;
 }

@@ -17,7 +17,7 @@ const InquirySchema = new mongoose.Schema({
       },
       lostPlace: {
         type: String,
-        required: true,
+        // required: true,
 
       },
       lostDate: {

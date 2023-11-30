@@ -1,5 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../errors/api-error');
+const pick = require('../utils/pick');
+
 const catchAsync = require('../utils/catchAsync');
 const {catagoryService } = require('../services');
 
@@ -11,7 +13,14 @@ const createCatagory = catchAsync(async(req, res)=>{
 
 
 const getCatagories = catchAsync(async(req, res)=>{
-       const result = await catagoryService.getCatagories();
+    const filter = pick(req.query, ['name',]);
+  // console.log(req.query.item?.lostPlace);
+    
+    // const filter = req.query.
+    // const filter = qs.parse(req.query);
+    // console.log(filter);
+    const options = pick(req.query, ['sortBy', 'limit', 'page']);
+       const result = await catagoryService.getCatagories(filter, options);
        res.send(result);
    });
    

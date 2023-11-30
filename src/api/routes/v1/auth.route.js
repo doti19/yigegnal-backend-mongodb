@@ -16,7 +16,7 @@ router.post('/logout', validator.body(authValidation.logout.body), authControlle
 router.post('/refresh-tokens', validator.body(authValidation.refreshTokens.body), authController.refreshTokens);
 router.post('/forgot-password', validator.body(authValidation.forgotPassword.body), authController.forgotPassword);
 router.post('/reset-password', validator.query(authValidation.resetPassword.query), validator.body(authValidation.resetPassword.body), authController.resetPassword);
-router.post('/send-verification-email', auth.auth(), authController.sendVerificationEmail);
+router.post('/send-verification-email', auth.auth(), validator.body(authValidation.sendVerificationEmail.body), authController.sendVerificationEmail);
 router.post('/change-password', auth.auth(), authController.changePassword);
 router.get('/verify-email', validator.query(authValidation.verifyEmail.query), authController.verifyEmail);
 

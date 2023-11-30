@@ -80,13 +80,13 @@ module.exports = {
   
 
   // POST /v1/auth/send-verification-email
-  // sendVerificationEmail: {
-  //   body: Joi.object({
-  //     email: Joi.string()
-  //       .email(),
-  //       // .required(),
-  //   }),
-  // },
+  sendVerificationEmail: {
+    body: Joi.object({
+      email: Joi.string()
+        .email(),
+        // .required(),
+    }),
+  },
 
   // POST /v1/auth/verify-email
    verifyEmail: {
